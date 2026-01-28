@@ -2,4 +2,9 @@
 
 Each word is an anagram of the previous word plus one letter.
 
-[Anagram Ladders](https://anagram-ladders.vercel.app/)
+<a href="https://anagram-ladders.vercel.app/">
+  <img
+    src="src/assets/github-thumbnail.png"
+    width="300"
+  />
+</a>
