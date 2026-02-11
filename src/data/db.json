@@ -1,0 +1,70 @@
+{
+    "games": [
+        {
+            "id": 2,
+            "game": {
+                "lengths": [
+                    3, 4, 5, 6, 7
+                ],
+                "words": [
+                    "ARC",
+                    "CARE",
+                    "TRACE",
+                    "RACKET",
+                    "TRACKER"
+                ],
+                "clues": [
+                    "A part of a circle.",
+                    "To show concern.",
+                    "A small amount of something.",
+                    "A loud, unpleasant noise.",
+                    "Device used to monitor location over time." 
+                ]
+            }
+        },
+        {
+            "id": 1,
+            "game": {
+                "lengths": [
+                    3, 4, 5, 6, 7
+                ],
+                "words": [
+                    "NIT",
+                    "TINS",
+                    "SATIN",
+                    "STRAIN",
+                    "RETAINS"
+                ],
+                "clues": [
+                    "A louse's egg.",
+                    "Metal containers.",
+                    "Smooth, glossy fabric.",
+                    "Genetic variant of a virus.",
+                    "Keeps hold of." 
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "game": {
+                "lengths": [
+                    2, 3, 4, 5, 6
+                ],
+                "words": [
+                    "OK",
+                    "OAK",
+                    "OKRA",
+                    "KORAN",
+                    "ANORAK"
+                ],
+                "clues": [
+                    "Acceptable.",
+                    "Tree bearing acorns.",
+                    "Green vegetable with slightly furry texture.",
+                    "Sacred religious text.",
+                    "Waterproof jacket." 
+                ]
+            }
+        }
+    ]
+}

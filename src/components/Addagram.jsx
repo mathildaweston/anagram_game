@@ -1,6 +1,6 @@
 import LetterInput from "./inputs/LetterInput";
 
-const Addagram = ({ value, numLetters, inputRefs, letterChange, isCorrect, clueChange, focusChange }) => {
+const Addagram = ({ numLetters, letterChange, isCorrect, clueChange, focusChange }) => {
 
     const letters = Array.from({ length: numLetters }, (_,  i) => i);
 
@@ -10,9 +10,11 @@ const Addagram = ({ value, numLetters, inputRefs, letterChange, isCorrect, clueC
                 {letters.map((letterIndex) => (
                     <LetterInput    
                         key={`${numLetters}-${letterIndex}`}
-                        inputRef={inputRefs[letterIndex]}
+                        // inputRef={inputRefs[letterIndex]}
+                        // letterInputRefs={letterInputRefs}
+                        numLetters={numLetters}
                         letter={letterIndex} 
-                        value={value[letterIndex]}
+                        // value={value[letterIndex]}
                         updateLetter={(e) => letterChange(
                             numLetters,
                             letterIndex,

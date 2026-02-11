@@ -1,58 +1,106 @@
-import { createContext, useContext, useState, useRef } from "react";
+import { createContext, useContext, useState, useRef, useEffect } from "react";
+import games from '../data/db.json';
 
 export const GameContext = createContext();
 
 
 export function GameProvider({children}) {
 
-  const wordLengths = [3, 4, 5, 6, 7];
-
-  const answerWords = [
-    "ARC",
-    "CARE",
-    "TRACE",
-    "RACKET",
-    "TRACKER"
-  ];
-
-  const clues = {
-    "3": "A part of a circle.",
-    "4": "To show concern.",
-    "5": "A small amount of something.",
-    "6": "A loud, unpleasant noise.",
-    "7": "Device used to monitor location over time." 
-  };
-
+  const [error, setError] = useState(null);
+  const [gameId, setGameId] = useState(1);
+  // const [wordLengths, setWordLengths] = useState([3, 4, 5, 6, 7]);
+  const [wordLengths, setWordLengths] = useState([]);
+  const [words, setWords] = useState([]);
+  const [clues, setClues] = useState([]);
   const [showResults, setShowResults] = useState(false);
-  const [words, setWords] = useState(
-    Object.fromEntries(wordLengths.map(function(numLetters, i) {
-      return [numLetters, Array.from({ length: numLetters }, (_,  i) => "")];
-    }))
-  );
-  const [answerStatuses, setAnswerStatuses] = useState(
-    Object.fromEntries(wordLengths.map(function(numLetters, i) {
-      return [numLetters, 0];
-    }))
-  );
-  const [clueShown, setClueShown] = useState(clues[wordLengths[0]]);
+  const [guesses, setGuesses] = useState({});
+  const [answerStatuses, setAnswerStatuses] = useState({});
+  const [clueShown, setClueShown] = useState(null);
+  const [answer, setAnswer] = useState({});
+
+  const letterInputRefs = useRef({});
 
 
-  const letterInputRefs = Object.fromEntries(wordLengths.map(function(numLetters) {
-    return [numLetters, Array.from({ length: numLetters }, (_,  i) => useRef(null))];
-  }));
+  useEffect(() => {
+    console.log(gameId);
+
+    const setupGame = (game) => {
+
+      const gameLengths = game["lengths"];
+      const gameWords = game["words"];
+      const gameClues = Object.fromEntries(
+        gameLengths.map(function(numLetters, i) {
+          return [numLetters, game["clues"][i]];
+      }))
+
+      setWordLengths(gameLengths);
+      setWords(gameWords);
+      setClues(gameClues);
+
+      console.log(`initial wordLengths: ${JSON.stringify(gameLengths)}`)
+      console.log(`initial Words: ${JSON.stringify(gameWords)}`)
+      console.log(`initial Clues: ${JSON.stringify(gameClues)}`)
+      console.log("Game now set up.");
+
+      const initialGuesses =  Object.fromEntries(gameLengths.map(function(numLetters, i) {
+        return [numLetters, Array.from({ length: numLetters }, (_, i) => "")];
+      }));
+      setGuesses(initialGuesses);
+      console.log(`Initial Guesses: ${JSON.stringify(initialGuesses)}`);
+
+      const initialAnswerStatuses = Object.fromEntries(gameLengths.map(function(numLetters) {
+        return [numLetters, 0];
+      }));
+      console.log(`Initial Answer Statuses: ${JSON.stringify(initialAnswerStatuses)}`);
+      setAnswerStatuses(initialAnswerStatuses);
+
+      const answer = Object.fromEntries(
+        gameLengths.map(function(numLetters, i) {
+          return [numLetters, gameWords[i]];
+      }));
+      setAnswer(answer);
+      setShowResults(false)
 
 
-  const answer = Object.fromEntries(
-    wordLengths.map(function(numLetters, i) {
-      return [numLetters, answerWords[i]];
-  }));
+    };
+
+
+    const fetchGames = () => {
+      try {
+        // We don't need to fetch the whole data every time?
+        // const data = fetch('api/games');
+        // if(!res.ok) throw new Error('Failed to fetch games');
+        // const data = res.json();
+        const data = games;
+        let gameObj;
+        try {
+          gameObj = data["games"].find(o => o.id === gameId);
+          let game = gameObj["game"];
+          setupGame(game);
+        } catch { 
+          console.log(gameObj);
+          setGameId(1);
+          console.log(gameId);
+        }
+      } catch (err) {
+        console.log(`Error: ${err.message}`);
+        setError(err.message);
+      }
+    };
+
+    fetchGames();
+
+  }, [gameId]);
+
+
+
 
 
   const handleLetterChange = (numLetters, letterIndex, letterValue) => {
 
-    const word = words[numLetters];
+    const guess = guesses[numLetters];
       
-    const newWord = word.map((l, i) => {
+    const newGuess = guess.map((l, i) => {
         if (i === letterIndex) {
             return letterValue.toUpperCase();
         } else {
@@ -60,10 +108,10 @@ export function GameProvider({children}) {
         }
     });
 
-    const newWords = {...words};
-    newWords[numLetters] = newWord;
+    const newGuesses = {...guesses};
+    newGuesses[numLetters] = newGuess;
 
-    setWords(newWords);
+    setGuesses(newGuesses);
 
     //Reset the answer statuses to get rid of the red bubbles
     resetAnswerStatuses();
@@ -82,7 +130,7 @@ export function GameProvider({children}) {
       };
 
       const newFocusLetter = getNextFocusLetter(numLetters, letterIndex);
-      letterInputRefs[newFocusLetter[0]][newFocusLetter[1]].current.focus();
+      letterInputRefs.current[newFocusLetter[0]][newFocusLetter[1]].focus();
 
     } 
   }
@@ -106,20 +154,20 @@ export function GameProvider({children}) {
       };
 
       const newFocusLetter = getPrevFocusLetter(numLetters, letterIndex);
-      letterInputRefs[newFocusLetter[0]][newFocusLetter[1]].current.focus();
+      letterInputRefs.current[newFocusLetter[0]][newFocusLetter[1]].focus();
     }
   };
 
   const checkAnswer = () => {
 
     wordLengths.forEach((length) => {
-      const wordString = words[length].toString().replaceAll(",", "");
+      const wordString = guesses[length].toString().replaceAll(",", "");
       console.log(`For ${length} letters, the match is: `, wordString === answer[length]);
     })
 
     const newAnswerStatuses = Object.fromEntries(
       wordLengths.map(function(numLetters, i) {
-        const wordString = words[numLetters].toString().replaceAll(",", "");
+        const wordString = guesses[numLetters].toString().replaceAll(",", "");
         const answerStatus = wordString === answer[numLetters] ? 1 : -1;
         return [numLetters, answerStatus];
       })
@@ -149,28 +197,35 @@ export function GameProvider({children}) {
   }
 
   const finishGame = () => {
-    setAnswerStatuses(Object.fromEntries(wordLengths.map(function(numLetters, i) {
-      return [numLetters, 0];
-    })));
-    setWords(Object.fromEntries(wordLengths.map(function(numLetters, i) {
-      return [numLetters, Array.from({ length: numLetters }, (_,  i) => "")];
-    })));
-    setShowResults(false)
+    console.log("Game finished!");
+    setGameId((prevGameId) => prevGameId + 1);
+    // setClueShown(null);
+    // setGuesses(Object.fromEntries(wordLengths.map(function(numLetters, i) {
+    //   return [numLetters, Array.from({ length: numLetters }, (_,  i) => "")];
+    // })));
+    // setAnswerStatuses(Object.fromEntries(wordLengths.map(function(numLetters, i) {
+    //   return [numLetters, 0];
+    // })));
+    // setWords(Object.fromEntries(wordLengths.map(function(numLetters, i) {
+    //   return [numLetters, Array.from({ length: numLetters }, (_,  i) => "")];
+    // })));
+    // setShowResults(false)
   }
 
   return (
     <GameContext.Provider value={{
-        wordLengths,
-        showResults, 
-        words, 
-        letterInputRefs,
-        answerStatuses, 
-        clueShown,
-        handleLetterChange,
-        handleClueChange,
-        handleFocusChange,
-        checkAnswer,
-        finishGame
+      error,
+      wordLengths,
+      showResults, 
+      guesses, 
+      answerStatuses, 
+      clueShown,
+      letterInputRefs,
+      handleLetterChange,
+      handleClueChange,
+      handleFocusChange,
+      checkAnswer,
+      finishGame
     }}>
         {children}
     </GameContext.Provider>
@@ -181,5 +236,5 @@ export function GameProvider({children}) {
 
 
 export function useGame() {
-  return useContext(GameContext)
+  return useContext(GameContext);
 }
