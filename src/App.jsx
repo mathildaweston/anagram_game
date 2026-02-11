@@ -5,12 +5,13 @@ import { useGame } from "./context/GameContext";
 const App = () => {
 
   const { 
+    error,
     wordLengths,
     showResults, 
-    words, 
-    letterInputRefs,
+    guesses, 
     answerStatuses, 
     clueShown,
+    letterInputRefs,
     handleLetterChange,
     handleClueChange,
     handleFocusChange,
@@ -21,19 +22,17 @@ const App = () => {
 
   return ( 
     <div>
-      <div className="page-title">  
-        Addagrams
-      </div>
+      {error ? <div className="error">{error}</div> : <div className="page-title">Anagram Ladders</div>}
       <p className="mt-10 mb-1" hidden={showResults}>
-        {clueShown}
+        {clueShown ? clueShown : "\u00A0"}
       </p>
       <div className="addagrams-container" hidden={showResults}>
         {wordLengths.map((length) => (
           <Addagram 
             key={length}
-            value={words[length]}
+            // value={guesses[length]}
             numLetters={length}
-            inputRefs={letterInputRefs[length]}
+            // letterInputRefs={letterInputRefs}
             letterChange={handleLetterChange}
             isCorrect={answerStatuses[length]}
             clueChange={handleClueChange}
