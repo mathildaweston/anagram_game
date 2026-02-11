@@ -14,16 +14,16 @@
                     "TRACKER"
                 ],
                 "clues": [
-                    "A part of a circle.",
+                    "Part of a circle.",
                     "To show concern.",
-                    "A small amount of something.",
-                    "A loud, unpleasant noise.",
+                    "Small amount of something.",
+                    "Loud, unpleasant noise.",
                     "Device used to monitor location over time." 
                 ]
             }
         },
         {
-            "id": 1,
+            "id": 5,
             "game": {
                 "lengths": [
                     3, 4, 5, 6, 7
@@ -36,7 +36,7 @@
                     "RETAINS"
                 ],
                 "clues": [
-                    "A louse's egg.",
+                    "Louse's egg.",
                     "Metal containers.",
                     "Smooth, glossy fabric.",
                     "Genetic variant of a virus.",
@@ -63,6 +63,50 @@
                     "Green vegetable with slightly furry texture.",
                     "Sacred religious text.",
                     "Waterproof jacket." 
+                ]
+            }
+        },
+        {
+            "id": 4,
+            "game": {
+                "lengths": [
+                    2, 3, 4, 5, 6
+                ],
+                "words": [
+                    "EL",
+                    "EEL",
+                    "REEL",
+                    "LEVER",
+                    "REVEAL"
+                ],
+                "clues": [
+                    "The twelfth letter of the alphabet.",
+                    "Snake-like fish.",
+                    "To lose one's balance and stagger or lurch.",
+                    "Bar used to lift a heavy load.",
+                    "Big disclosure." 
+                ]
+            }
+        },
+        {
+            "id": 1,
+            "game": {
+                "lengths": [
+                    3, 4, 5, 6, 7
+                ],
+                "words": [
+                    "TIE",
+                    "EXIT",
+                    "EXIST",
+                    "SEXIST",
+                    "SIXTIES"
+                ],
+                "clues": [
+                    "Draw.",
+                    "Way out.",
+                    "Be.",
+                    "Misogynistic.",
+                    "Golden Decade." 
                 ]
             }
         }
