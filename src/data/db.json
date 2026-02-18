@@ -1,7 +1,7 @@
 {
     "games": [
         {
-            "id": 2,
+            "id": 5,
             "game": {
                 "lengths": [
                     3, 4, 5, 6, 7
@@ -23,7 +23,7 @@
             }
         },
         {
-            "id": 5,
+            "id": 2,
             "game": {
                 "lengths": [
                     3, 4, 5, 6, 7
@@ -45,7 +45,7 @@
             }
         },
         {
-            "id": 3,
+            "id": 1,
             "game": {
                 "lengths": [
                     2, 3, 4, 5, 6
@@ -61,13 +61,13 @@
                     "Acceptable.",
                     "Tree bearing acorns.",
                     "Green vegetable with slightly furry texture.",
-                    "Sacred religious text.",
+                    "Religious text.",
                     "Waterproof jacket." 
                 ]
             }
         },
         {
-            "id": 4,
+            "id": 3,
             "game": {
                 "lengths": [
                     2, 3, 4, 5, 6
@@ -89,7 +89,7 @@
             }
         },
         {
-            "id": 1,
+            "id": 4,
             "game": {
                 "lengths": [
                     3, 4, 5, 6, 7
